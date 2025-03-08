@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Fire NOC Issuance System</title>
+    <link rel="shortcut icon" href="{% static 'logo.png' %} " type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container"> 
+        <form action="{% url "generate_noc" %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="start">
+                <h1 class="title"> Online Fire NOC Issuance System 🚒</h1>
+                <label for="address" class="sub-title">Enter the Site Address</label> <br>
+                <input type="text" name="site_address" required>
+            </div><br>
+
+            <h1 class="title"> Upload Required Images</h1>
+
+            <div class="upload">
+                <h2 class="sub-title">Upload Fire Extinguisher Image</h2>
+                <div class="upload-section">
+                    <i class="fa-solid fa-upload center"></i>
+                    <div class="upload-section-title">
+                        <h6>Drag and drop file here</h6>
+                        <h6>Limit 200MB per file • JPG, JPEG, PNG</h6>
+                    </div><br>
+                    <input type="file" name="fire_extinguisher" accept=".jpg,.jpeg,.png" class="file-upload" required>
+                </div>
+            </div>
+
+            <div class="upload">
+                <br>
+                <h2 class="sub-title">Upload Fire Exit Image</h2>
+                <div class="upload-section">
+                    <i class="fa-solid fa-upload center"></i>
+                    <div class="upload-section-title">
+                        <h6>Drag and drop file here</h6>
+                        <h6>Limit 200MB per file • JPG, JPEG, PNG</h6>
+                    </div><br>
+                    <input type="file" name="fire_exit" accept=".jpg,.jpeg,.png" class="file-upload" required>
+                </div>
+            </div>
+
+            <div class="upload">
+                <br>
+                <h2 class="sub-title">Upload Fire Safety Warning Sign Image</h2>
+                <div class="upload-section">
+                    <i class="fa-solid fa-upload center"></i>
+                    <div class="upload-section-title">
+                        <h6>Drag and drop file here</h6>
+                        <h6>Limit 200MB per file • JPG, JPEG, PNG</h6>
+                    </div><br>
+                    <input type="file" name="fire_safety_sign" accept=".jpg,.jpeg,.png" class="file-upload" required>
+                </div>
+            </div>
+
+            <div class="upload">
+                <br>
+                <h2 class="sub-title">Upload Water Infrastructure Image</h2>
+                <div class="upload-section">
+                    <i class="fa-solid fa-upload center"></i>
+                    <div class="upload-section-title">
+                        <h6>Drag and drop file here</h6>
+                        <h6>Limit 200MB per file • JPG, JPEG, PNG</h6>
+                    </div><br>
+                    <input type="file" name="water_infrastructure" accept=".jpg,.jpeg,.png" class="file-upload" required>
+                </div>
+            </div>
+            <br>
+
+            <button id="analyze" type="submit">Analyze</button>
+        </form>
+    </div>
+</body>
+</html>
