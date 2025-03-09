@@ -18,8 +18,18 @@
             {% csrf_token %}
             <div class="start">
                 <h1 class="title"> Online Fire NOC Issuance System 🚒</h1>
-                <label for="address" class="sub-title">Enter the Site Address</label> <br>
-                <input type="text" name="site_address" required>
+                <label for="name" class="sub-title">Enter Your Full Name</label> <br>
+                <input type="text" name="name" required>
+                <label for="email" class="sub-title">Enter Your Email Id</label> <br>
+                <input type="email" name="email" required>
+                <label for="phone" class="sub-title">Enter Your Phone Number</label> <br>
+                <input type="text" name="phone" required>
+                <label for="date" class="sub-title">Enter Date</label> <br>
+                <input type="date" name="date" required>
+                <label for="org_name" class="sub-title">Enter Your Organization Name</label> <br>
+                <input type="text" name="org_name" required>
+                <label for="org_address" class="sub-title">Enter Your Organization Address</label> <br>
+                <input type="text" name="org_address" required>
             </div><br>
 
             <h1 class="title"> Upload Required Images</h1>
