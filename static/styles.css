@@ -4,12 +4,13 @@
 }
 
 body{
-    background-color: #000000;
+    background-image: url("bg.jpg");
+    background-size:auto;
     font-family: Inter;
 }
 
 .container{
-    background-color: #121212;
+    background-image: url("bg.jpg");
     color: white;
     padding-top: 1rem;
     padding-left: 1rem;
@@ -30,8 +31,6 @@ body{
 }
 
 input{
-    background-color: gray;
-    color: white;
     width: 27.7rem;
     height: 1.7rem;
     border-radius: 0.3rem;
@@ -44,7 +43,6 @@ input{
 .container .upload .upload-section{
     display: flex;
     margin-top: 1rem;
-    background-color: gray;
     height: 3.4rem;
     width: 28rem;
     font-size: 1.1rem;
@@ -66,7 +64,7 @@ input{
 
 #analyze{
     color: red;
-    background-color: #121212;
+    background-color: white;
     border: 2px solid red;
     font-size: 1rem;
     padding: 0.2rem 0.2rem 0.2rem 0.2rem;
