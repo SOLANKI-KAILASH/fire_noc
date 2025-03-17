@@ -1,13 +1,20 @@
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
-import os
+import qrcode
 
-# Define file path where the PDF will be saved
-save_path = os.path.join("D:\Downloads", "fire_noc.pdf")  # Change the path as needed
+# URL of the PDF
+url = "https://res.cloudinary.com/dsnmvwbvj/image/upload/v1742231258/fire_noc_Rudra_Prajapati_.pdf"
 
-# Create a PDF object
-p = canvas.Canvas(save_path, pagesize=A4)
-width, height = A4
+# Generate QR code
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_L,
+    box_size=10,
+    border=4,
+)
+qr.add_data(url)
+qr.make(fit=True)
 
+# Create and save the QR code image
+img = qr.make_image(fill="black", back_color="white")
+img.save("fire_noc_qr.png")
 
-print(f"PDF saved successfully at {save_path}")
+print("QR code saved as fire_noc_qr.png")

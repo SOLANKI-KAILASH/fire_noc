@@ -9,10 +9,11 @@ class FireNOCSubmission(models.Model):
     date=models.DateField(default=datetime.date.today)
     org_name=models.CharField(max_length=255,default="Unknown")
     org_address = models.CharField(max_length=255)
-    fire_extinguisher = CloudinaryField("fire_noc")
-    fire_exit = CloudinaryField("fire_noc")
-    fire_safety_sign = CloudinaryField("fire_noc")
-    water_infrastructure = CloudinaryField("fire_noc")
+    fire_extinguisher = CloudinaryField("fire_extinguisher")
+    fire_exit = CloudinaryField("fire_exit")
+    fire_safety_sign = CloudinaryField("fire_safety_sign")
+    water_infrastructure = CloudinaryField("water_infrastructure")
+    noc_pdf_url = models.URLField(blank=True, null=True) 
 
     def __str__(self):
         return self.org_address

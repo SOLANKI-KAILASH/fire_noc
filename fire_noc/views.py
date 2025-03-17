@@ -1,8 +1,13 @@
 from django.shortcuts import render,redirect
+import cloudinary.uploader
 from .models import FireNOCSubmission
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import A4
+from io import BytesIO
 from reportlab.pdfgen import canvas
+import qrcode
+from django.core.mail import EmailMessage
+
 # Create your views here.
 def index(request):
     return render(request,"index.html")
@@ -20,31 +25,11 @@ def generate_fire_noc_pdf(request):
         fire_exit = request.FILES["fire_exit"]
         fire_safety_sign = request.FILES["fire_safety_sign"]
         water_infrastructure = request.FILES["water_infrastructure"]
-
-        # Save data in database
-        noc = FireNOCSubmission.objects.create(
-            name=name,
-            email=email,
-            phone=phone,
-            date=date,
-            org_name=org_name,
-            org_address=org_address,
-            fire_extinguisher=fire_extinguisher,
-            fire_exit=fire_exit,
-            fire_safety_sign=fire_safety_sign,
-            water_infrastructure=water_infrastructure,
-        )
-    # Get user input (assuming data is coming via POST request)
-        org_address = request.POST.get("org_address", "Unknown Address")
-        
-        # Create a response object for a PDF file
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="fire_noc.pdf"'
-
-        # Create a PDF object
-        p = canvas.Canvas(response, pagesize=A4)
+    
+        buffer = BytesIO()
+        p = canvas.Canvas(buffer, pagesize=A4)
         width, height = A4
-
+        
         # Title
         p.setFont("Times-Bold", 16)
         p.drawString(180, height - 50, "Bhavnagar Municipal Corporation")
@@ -128,6 +113,41 @@ def generate_fire_noc_pdf(request):
 
         # Save the PDF
         p.showPage()
-        p.save()
+        p.save()    
 
-    return response
+        buffer.seek(0)
+        cloudinary_response = cloudinary.uploader.upload(
+            buffer, 
+            resource_type="auto", 
+            format="pdf", 
+            type="upload",
+            access_mode="public",
+            public_id=f"fire_noc_{name.replace(' ', '_')}"
+        )
+        noc_pdf_url=cloudinary_response.get("url")
+        qr = qrcode.make(noc_pdf_url)
+        qr_bytes = BytesIO()
+        qr.save(qr_bytes, format="PNG")
+        qr_bytes.seek(0)
+
+        subject = "Your Fire NOC QR Code"
+        message = f"Dear {name},\n\nYour Fire NOC has been generated successfully. Scan the QR code to access your NOC PDF.\n\nBest Regards,\nBhavnagar Municipal Corporation"
+
+        email_msg = EmailMessage(subject, message, "your-email@gmail.com", [email])
+        email_msg.attach("fire_noc_qr.png", qr_bytes.getvalue(), "image/png")  # Attach QR
+        email_msg.send()
+        # Save data in database
+        noc = FireNOCSubmission.objects.create(
+            name=name,
+            email=email,
+            phone=phone,
+            date=date,
+            org_name=org_name,
+            org_address=org_address,
+            fire_extinguisher=fire_extinguisher,
+            fire_exit=fire_exit,
+            fire_safety_sign=fire_safety_sign,
+            water_infrastructure=water_infrastructure,
+            noc_pdf_url=noc_pdf_url
+        )
+        return HttpResponse("<script>alert('Fire NOC submitted successfully! Check your email for the QR code.'); window.location.href='/';</script>")
